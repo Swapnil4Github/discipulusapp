@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "327660783278",
+    "project_id": "discipulus-d5885",
+    "storage_bucket": "discipulus-d5885.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327660783278:android:4836c6080560b40e99cf3f",
+        "android_client_info": {
+          "package_name": "com.example.discipulus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327660783278-ff12m1vmpord4c5k22hpr8vlps0dick6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.discipulus",
+            "certificate_hash": "5e1559ad51c4e68d4a613bd3adc2bd842f6438a6"
+          }
+        },
+        {
+          "client_id": "327660783278-ek5fjt5vn9mo19h1dfklpiup9nguggia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6iwXfIJE3WAfVMw1W01RyMCwsGe6xQxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327660783278-ek5fjt5vn9mo19h1dfklpiup9nguggia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

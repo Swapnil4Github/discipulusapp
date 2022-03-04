@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Discipulus Academy</string>
+    <string name="facebook_app_id">703168197761140</string>
+    <string name="fb_login_protocol_scheme">fb703168197761140</string>
+</resources>
