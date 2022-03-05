@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:discipulus/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:discipulus/authentication/viaGmail.dart';
 import 'package:get/get.dart';
-
+import 'package:discipulus/Controller/login_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -16,12 +13,11 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isMale = true;
-
+  final controller = Get.put(LoginController());
   bool isSignupScreen = true;
 
   bool isRememberMe = false;
   GoogleSignIn _googleSignIn = GoogleSignIn();
-  final LoginController controller = Get.put(LoginController());
 
 
   @override
@@ -31,7 +27,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: Palette.backgroundColor,
-      body:  Stack(
+      body:  Obx((){
+        if(controller.googleAccount.value==null)
+          return Stack(
             children: [
               Positioned(
                 top: 0,
@@ -40,20 +38,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Container(
                   height: 400,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/purple.jpg"),
-                      fit: BoxFit.fill,
-                    )
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/purple.jpg"),
+                        fit: BoxFit.fill,
+                      )
 
                   ),
                   child: Container(
-                    child: Column(
-                      children: [
-                        SizedBox(height: topPadding),
-                  SizedBox(height: 5),
-                        AnimatedImage(),
-                      ],
-                    )
+                      child: Column(
+                        children: [
+                          SizedBox(height: topPadding),
+                          SizedBox(height: 5),
+                          AnimatedImage(),
+                        ],
+                      )
 
                   ),
                 ),
@@ -105,416 +103,416 @@ class _SignUpScreenState extends State<SignUpScreen> {
               AnimatedPositioned(
                 duration: Duration(milliseconds: 700),
                 curve: Curves.easeInOut,
-              top: isSignupScreen ? 270: 300,
-              child:AnimatedContainer(
-                duration: Duration(milliseconds: 700),
-                curve: Curves.easeInOut,
-                height: isSignupScreen ? 380: 280,
-                width: MediaQuery.of(context).size.width-40,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 15,
-                        spreadRadius: 5,
-                      )
-                    ]
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap:(){
-                              setState((){
-                                isSignupScreen = false;
-                              });
-                            },
+                top: isSignupScreen ? 270: 300,
+                child:AnimatedContainer(
+                  duration: Duration(milliseconds: 700),
+                  curve: Curves.easeInOut,
+                  height: isSignupScreen ? 380: 280,
+                  width: MediaQuery.of(context).size.width-40,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 15,
+                          spreadRadius: 5,
+                        )
+                      ]
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            GestureDetector(
+                              onTap:(){
+                                setState((){
+                                  isSignupScreen = false;
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "LOGIN",
+                                    style:
+                                    TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: isSignupScreen ? Colors.grey : Colors.black,),
+                                  ),
+                                  if (!isSignupScreen)
+                                    Container(
+                                      margin: EdgeInsets.only(top: 3),
+                                      height: 2,
+                                      width: 55,
+                                      color: Colors.deepPurpleAccent,
+                                    )
+
+                                ],
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  isSignupScreen = true;
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  Text("SIGNUP",
+                                    style:TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: isSignupScreen ? Colors.black : Colors.grey,
+                                    ),),
+                                  if(isSignupScreen)
+                                    Container(
+                                      margin: EdgeInsets.only(top: 3),
+                                      height: 2,
+                                      width: 55,
+                                      color: Colors.deepPurple,
+                                    )
+
+                                ],
+                              ),
+                            ),
+
+                          ],
+                        ),
+                        if(isSignupScreen)
+                          Container(
+                            margin: EdgeInsets.only(top: 20,left: 13,right: 13),
                             child: Column(
                               children: [
-                                Text(
-                                  "LOGIN",
-                                  style:
-                                  TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: isSignupScreen ? Colors.grey : Colors.black,),
+                                Padding(
+                                  padding:const EdgeInsets.only(bottom:8.0),
+                                  child: TextField(
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.account_box_outlined,
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+
+                                        ),
+                                        contentPadding: EdgeInsets.all(10),
+                                        hintText: "User Name",
+                                        hintStyle: TextStyle(
+                                            fontSize: 14,color: Colors.grey),
+                                      )
                                   ),
-                  if (!isSignupScreen)
-                  Container(
-                    margin: EdgeInsets.only(top: 3),
-                    height: 2,
-                    width: 55,
-                    color: Colors.deepPurpleAccent,
-                  )
+                                ),
+                                Padding(
+                                  padding:const EdgeInsets.only(bottom:8.0),
+                                  child: TextField(
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.email_outlined,
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+
+                                        ),
+                                        contentPadding: EdgeInsets.all(10),
+                                        hintText: "Email",
+                                        hintStyle: TextStyle(
+                                            fontSize: 14,color: Colors.grey),
+                                      )
+                                  ),
+                                ),
+                                Padding(
+                                  padding:const EdgeInsets.only(bottom:8.0),
+                                  child: TextField(
+                                      obscureText: true,
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.lock,
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+
+                                        ),
+                                        contentPadding: EdgeInsets.all(10),
+                                        hintText: "Password",
+                                        hintStyle: TextStyle(
+                                            fontSize: 14,color: Colors.grey),
+                                      )
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10,left: 10),
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: (){
+                                          setState(() {
+                                            isMale = true;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 30,
+                                              height: 30,
+                                              margin: EdgeInsets.only(right: 8),
+
+                                              decoration: BoxDecoration(
+                                                color: isMale ? Colors.grey:Colors.transparent ,
+                                                border:Border.all(
+                                                  width: 1,
+                                                  color: isMale ? Colors.transparent:Colors.grey ,
+
+                                                ),
+                                                borderRadius: BorderRadius.circular(15),
+
+                                              ),
+                                              child: Icon(Icons.male_outlined,
+                                                color: isMale ? Colors.white:Colors.deepPurpleAccent ,),
+
+                                            ),
+                                            Text(
+                                              "Male",
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            )
+
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 30,),
+                                      GestureDetector(
+                                        onTap: (){
+                                          setState(() {
+                                            isMale = false;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 30,
+                                              height: 30,
+                                              margin: EdgeInsets.only(right: 8),
+                                              decoration: BoxDecoration(
+                                                color: isMale ? Colors.transparent:Colors.grey,
+                                                border:Border.all(
+                                                  width: 1,
+                                                  color: isMale ? Colors.grey:Colors.transparent ,
+
+                                                ),
+                                                borderRadius: BorderRadius.circular(15),
+
+                                              ),
+                                              child: Icon(Icons.female_rounded,
+                                                color: isMale ? Colors.deepPurpleAccent:Colors.white,),
+
+                                            ),
+                                            Text(
+                                              "Female",
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            )
+
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: 200,
+                                  margin: EdgeInsets.only(top: 20),
+                                  child: RichText(
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                        text: "By pressing 'Submit' you agree to our ",
+                                        style: TextStyle(color: Colors.grey),
+                                        children: [
+                                          TextSpan(
+                                            text: "terms & conditions",
+                                            style: TextStyle(
+                                              color: Colors.deepPurpleAccent,
+                                            ),
+                                          )
+                                        ]
+                                    ),
+                                  ),
+                                ),
+
+
 
                               ],
                             ),
+
                           ),
-                          GestureDetector(
-                            onTap: (){
-                              setState(() {
-                                isSignupScreen = true;
-                              });
-                            },
+                        if(!isSignupScreen)
+                          Container(
+                            margin: EdgeInsets.only(top: 20,left: 13,right: 13),
                             child: Column(
                               children: [
-                                Text("SIGNUP",
-                                style:TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: isSignupScreen ? Colors.black : Colors.grey,
-                                ),),
-                                if(isSignupScreen)
-                                 Container(
-                                  margin: EdgeInsets.only(top: 3),
-                                  height: 2,
-                                  width: 55,
-                                  color: Colors.deepPurple,
+                                Padding(
+                                  padding:const EdgeInsets.only(bottom:8.0),
+                                  child: TextField(
+                                      controller: emailController,
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.email_outlined,
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+
+                                        ),
+                                        contentPadding: EdgeInsets.all(10),
+                                        hintText: "Email",
+                                        hintStyle: TextStyle(
+                                            fontSize: 14,color: Colors.grey),
+                                      )
+                                  ),
+                                ),
+                                Padding(
+                                  padding:const EdgeInsets.only(bottom:8.0),
+                                  child: TextField(
+                                      controller: passwordController,
+                                      obscureText: true,
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.lock,
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(Radius.circular(35.0)),
+
+                                        ),
+                                        contentPadding: EdgeInsets.all(10),
+                                        hintText: "Password",
+                                        hintStyle: TextStyle(
+                                            fontSize: 14,color: Colors.grey),
+                                      )
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          value: isRememberMe,
+                                          activeColor: Colors.grey,
+                                          onChanged:(value){
+                                            isRememberMe = !isRememberMe;
+                                          },
+                                        ),
+                                        Text("Remeber me",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),)
+                                      ],
+                                    ),
+                                    TextButton(
+                                      onPressed: (){
+
+                                      },
+                                      child: Text("Forgot Password?",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),),
+                                    )
+                                  ],
                                 )
 
+
                               ],
                             ),
-                          ),
 
-                        ],
-                      ),
-                      if(isSignupScreen)
-                        Container(
-                          margin: EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:const EdgeInsets.only(bottom:8.0),
-                                child: TextField(
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.account_box_outlined,
-                                        color: Colors.deepPurpleAccent,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                          )
 
-                                      ),
-                                      contentPadding: EdgeInsets.all(10),
-                                      hintText: "User Name",
-                                      hintStyle: TextStyle(
-                                          fontSize: 14,color: Colors.grey),
-                                    )
-                                ),
-                              ),
-                              Padding(
-                                padding:const EdgeInsets.only(bottom:8.0),
-                                child: TextField(
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.email_outlined,
-                                        color: Colors.deepPurpleAccent,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-
-                                      ),
-                                      contentPadding: EdgeInsets.all(10),
-                                      hintText: "Email",
-                                      hintStyle: TextStyle(
-                                          fontSize: 14,color: Colors.grey),
-                                    )
-                                ),
-                              ),
-                              Padding(
-                                padding:const EdgeInsets.only(bottom:8.0),
-                                child: TextField(
-                                    obscureText: true,
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.lock,
-                                        color: Colors.deepPurpleAccent,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-
-                                      ),
-                                      contentPadding: EdgeInsets.all(10),
-                                      hintText: "Password",
-                                      hintStyle: TextStyle(
-                                          fontSize: 14,color: Colors.grey),
-                                    )
-                                ),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10,left: 10),
-                                child: Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          isMale = true;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 30,
-                                            height: 30,
-                                            margin: EdgeInsets.only(right: 8),
-
-                                            decoration: BoxDecoration(
-                                              color: isMale ? Colors.grey:Colors.transparent ,
-                                              border:Border.all(
-                                                width: 1,
-                                                color: isMale ? Colors.transparent:Colors.grey ,
-
-                                              ),
-                                              borderRadius: BorderRadius.circular(15),
-
-                                            ),
-                                            child: Icon(Icons.male_outlined,
-                                              color: isMale ? Colors.white:Colors.deepPurpleAccent ,),
-
-                                          ),
-                                          Text(
-                                            "Male",
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          )
-
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(width: 30,),
-                                    GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          isMale = false;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 30,
-                                            height: 30,
-                                            margin: EdgeInsets.only(right: 8),
-                                            decoration: BoxDecoration(
-                                              color: isMale ? Colors.transparent:Colors.grey,
-                                              border:Border.all(
-                                                width: 1,
-                                                color: isMale ? Colors.grey:Colors.transparent ,
-
-                                              ),
-                                              borderRadius: BorderRadius.circular(15),
-
-                                            ),
-                                            child: Icon(Icons.female_rounded,
-                                              color: isMale ? Colors.deepPurpleAccent:Colors.white,),
-
-                                          ),
-                                          Text(
-                                            "Female",
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          )
-
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 200,
-                                margin: EdgeInsets.only(top: 20),
-                                child: RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                      text: "By pressing 'Submit' you agree to our ",
-                                      style: TextStyle(color: Colors.grey),
-                                      children: [
-                                        TextSpan(
-                                          text: "terms & conditions",
-                                          style: TextStyle(
-                                            color: Colors.deepPurpleAccent,
-                                          ),
-                                        )
-                                      ]
-                                  ),
-                                ),
-                              ),
-
-
-
-                            ],
-                          ),
-
-                        ),
-                      if(!isSignupScreen)
-                        Container(
-                          margin: EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:const EdgeInsets.only(bottom:8.0),
-                                child: TextField(
-                                  controller: emailController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.email_outlined,
-                                        color: Colors.deepPurpleAccent,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-
-                                      ),
-                                      contentPadding: EdgeInsets.all(10),
-                                      hintText: "Email",
-                                      hintStyle: TextStyle(
-                                          fontSize: 14,color: Colors.grey),
-                                    )
-                                ),
-                              ),
-                              Padding(
-                                padding:const EdgeInsets.only(bottom:8.0),
-                                child: TextField(
-                                  controller: passwordController,
-                                    obscureText: true,
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.lock,
-                                        color: Colors.deepPurpleAccent,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
-                                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-
-                                      ),
-                                      contentPadding: EdgeInsets.all(10),
-                                      hintText: "Password",
-                                      hintStyle: TextStyle(
-                                          fontSize: 14,color: Colors.grey),
-                                    )
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                   children: [
-                                     Checkbox(
-                                       value: isRememberMe,
-                                       activeColor: Colors.grey,
-                                       onChanged:(value){
-                                         isRememberMe = !isRememberMe;
-                                       },
-                                     ),
-                                     Text("Remeber me",
-                                     style: TextStyle(
-                                      fontSize: 12,
-                                       color: Colors.grey,
-                                     ),)
-                                   ],
-                                  ),
-                                  TextButton(
-                                    onPressed: (){
-
-                                    },
-                                    child: Text("Forgot Password?",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),),
-                                  )
-                                ],
-                              )
-
-
-                            ],
-                          ),
-
-                        )
-
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ) ,
-            ),
+                ) ,
+              ),
               AnimatedPositioned(
                 duration: Duration(milliseconds: 700),
                 curve: Curves.easeInOut,
-                    top: isSignupScreen ? 600 : 530,
-                    left: 0,
-                    right: 0,
-                    child: Center(
+                top: isSignupScreen ? 600 : 530,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    height: 90,
+                    width: 90,
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50),
+
+                    ),
+                    child: GestureDetector(
+                      onTap: ()
+                      {
+
+                      },
                       child: Container(
-                        height: 90,
-                        width: 90,
-                        padding: EdgeInsets.all(15),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50),
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.orange.shade200,Colors.red.shade400,
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(30),
 
                         ),
-                        child: GestureDetector(
-                       onTap: ()
-                          {
-
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.orange.shade200,Colors.red.shade400,
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(30),
-
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,color: Colors.white,
-                            ),
-                          ),
+                        child: Icon(
+                          Icons.arrow_forward,color: Colors.white,
                         ),
                       ),
                     ),
                   ),
+                ),
+              ),
               Positioned(
                 top: MediaQuery.of(context).size.height-95,
                 right: 0,
@@ -536,7 +534,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               side: BorderSide(width: 1,color: Colors.grey),
                               minimumSize: Size(155,40),
                               shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               primary: Colors.white,
                               backgroundColor: Palette.facebookColor,
@@ -554,9 +552,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                           TextButton(
-                            onPressed: ()async{
-                            controller.loginWithGoogle();
-
+                            onPressed: (){
+                              controller.login();
                             },
                             style: TextButton.styleFrom(
                               side: BorderSide(width: 1,color: Colors.grey),
@@ -588,7 +585,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
 
             ],
-          )
+          );
+        else
+          return Center(
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: Image.network(controller.googleAccount.value?.photoUrl ?? '').image,
+                    radius: 100,
+                  ),
+                  Text(controller.googleAccount.value?.displayName ?? '',
+                  style: Get.textTheme.headline1,),
+                  Text(controller.googleAccount.value?.email ?? '',
+                    style: Get.textTheme.bodyText1),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      controller.logout();
+                    },
+                    child: Text("Log Out",
+                      style: Get.textTheme.headline1,
+                    ),
+                  ),
+
+                ],
+
+              ),
+            ),
+          );
+      })
 
     );
   }
