@@ -1,4 +1,6 @@
 import 'package:discipulus/authentication/viaEmail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:discipulus/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,8 +19,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isSignupScreen = true;
 
   bool isRememberMe = false;
-  GoogleSignIn _googleSignIn = GoogleSignIn();
-
 
   @override
   var emailController = TextEditingController();
@@ -28,7 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: Palette.backgroundColor,
       body:  Obx((){
-        if(controller.googleAccount.value==null)
+        if(controller.auth.currentUser?.emailVerified==null)
           return Stack(
             children: [
               Positioned(
@@ -554,6 +554,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           TextButton(
                             onPressed: (){
                               controller.login();
+
                             },
                             style: TextButton.styleFrom(
                               side: BorderSide(width: 1,color: Colors.grey),
