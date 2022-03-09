@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
-import 'SignUpScreen.dart';
 import 'package:flutter/painting.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:discipulus/Controller/login_controller.dart';
+import 'package:discipulus/Controller/user_controller.dart';
 
-
+import 'Model/constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().then((value) => Get.put(LoginController()));
-  runApp(MyApp());
-}
+    Get.lazyPut<UserController>(
+          () => UserController(),
+    );
+
+  await firebaseInitialization.then((value) {
+    Get.put(AuthController());
+
+    runApp(MyApp());
+  });
+      }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignUpScreen(),
+      home: Center(child: const CircularProgressIndicator(backgroundColor: Colors.white,)),
     );
   }
 }
