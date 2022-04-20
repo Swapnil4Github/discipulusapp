@@ -19,7 +19,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isSignupScreen = true;
 
   bool isRememberMe = false;
-
+  var emailController3 = TextEditingController();
+  var passwordController3 = TextEditingController();
   @override
 
   Widget build(BuildContext context) {
@@ -408,6 +409,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Padding(
                                 padding:const EdgeInsets.only(bottom:8.0),
                                 child: TextField(
+                                  controller: emailController3,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(
@@ -433,6 +435,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Padding(
                                 padding:const EdgeInsets.only(bottom:8.0),
                                 child: TextField(
+                                  controller:passwordController3,
                                     obscureText: true,
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(
@@ -533,9 +536,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       child: GestureDetector(
                         onTap: (){
-                          authController.register(emailController2.text.trim(),
-                              passwordController2.text.trim());
-                          check = 2 as RxInterface<int?>;
+                          if(isSignupScreen==true)
+                            {
+                              authController.register(emailController2.text.trim(),
+                                  passwordController2.text.trim());
+                            }
+                          else
+                            {
+                              authController.login(emailController3.text.trim(),
+                                  passwordController3.text.trim());
+                            }
+
                         },
                         child: Icon(
                           Icons.arrow_forward,color: Colors.white,

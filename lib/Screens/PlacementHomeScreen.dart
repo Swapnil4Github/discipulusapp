@@ -1,0 +1,261 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:discipulus/Modules/Data.dart';
+import 'package:discipulus/Modules/Event.dart';
+//import 'package:eventomepage/Screens/ProfileScreen.dart';
+import 'package:discipulus/Widgets/HomeEventContainer.dart';
+import 'package:flutter/material.dart';
+import '../Controller/EventDataBaseService.dart';
+import '../View/dashboard.dart';
+import 'package:discipulus/Modules/Data.dart';
+import 'package:discipulus/Modules/Event.dart';
+import 'package:flutter/material.dart';
+import 'dart:ui';
+import 'package:discipulus/Model/colors.dart';
+import 'package:discipulus/View/profilePage.dart';
+import 'package:discipulus/View/userDetailsAdd.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
+import 'package:discipulus/Model/constants.dart';
+import 'package:discipulus/View/noteshome.dart';
+
+import '../View/dashboard.dart';
+import '../Widgets/HomePlacementEventContainer.dart';
+import 'ChatHomeScreen.dart';
+import 'EventHomeScreen.dart';
+
+class PlacementHomeScreen extends StatefulWidget {
+  @override
+  _PlacementHomeScreenState createState() => _PlacementHomeScreenState();
+}
+
+class _PlacementHomeScreenState extends State<PlacementHomeScreen> {
+  int _index = 3;
+  DatabaseService service = DatabaseService();
+  Future<List<PlacementEvent>>? eventList;
+  List<PlacementEvent>? retrievedEventList;
+  Future<List<PlacementEvent>>? upcomingEventList;
+  List<PlacementEvent>? retrievedUpcomingEventList;
+  @override
+
+  void initState() {
+    super.initState();
+    _initRetrieval();
+
+  }
+  Future<void> _initRetrieval() async {
+    eventList = service.retrievePlacementEvent();
+    retrievedEventList = await service.retrievePlacementEvent();
+    upcomingEventList = service.retrieveUpcomingPlacementEvent();
+    retrievedUpcomingEventList = await service.retrieveUpcomingPlacementEvent();
+  }
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      extendBody: true,
+      bottomNavigationBar: Container(
+        height: 80,
+        child: ClipRect(
+          child: BackdropFilter(
+            filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: FloatingNavbar(
+              selectedBackgroundColor: Colors.deepPurple,
+              unselectedItemColor: Colors.black,
+              selectedItemColor: Colors.white,
+              backgroundColor: Colors.transparent,
+              onTap: (int val){
+                setState(() {
+                  if(val==2)
+                  {
+                    Get.to(ChatHomeScreen());
+                  }
+    if(val==4)
+    {
+    Get.to(EventHomeScreen());
+    }
+    if(val==1)
+    {
+    Get.to(() => NotesHomePage());
+    }
+    if(val==0)
+    {
+    Get.to(() => HomePage());
+    }
+
+    if(val==3)
+    {
+    Get.to(() => PlacementHomeScreen());
+    }
+                  _index = val;
+                });
+              },
+
+              currentIndex: _index,
+              items: [
+                FloatingNavbarItem(icon: Icons.home_rounded,title: 'Home'),
+                FloatingNavbarItem(icon: Icons.menu_book_rounded,title: 'Notes'),
+                FloatingNavbarItem(icon: Icons.chat,title: 'Chat'),
+                FloatingNavbarItem(icon: Icons.school_rounded,title: 'Jobs'),
+                FloatingNavbarItem(icon: Icons.event_note_outlined,title: 'Events'),
+
+
+              ],
+            ),
+          ),
+        ),
+      ),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: white,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: TextButton(
+            onPressed: () {
+              Get.to(UserDetailsAdd());
+            },
+            child: Container(
+                width: 70,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: white,
+                  border: Border.all(color: Colors.grey),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Icon(Icons.notes_outlined,color: Colors.grey.shade700,)),
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: (){
+              Get.to(UserDetailsAdd());
+            }
+            ,
+            child: Container(
+              height: 40.0,
+              width: 40.0,
+              margin: const EdgeInsets.only(right: 20, top: 10, bottom: 5),
+              child: Icon(Icons.edit,color: Colors.grey.shade800,),
+            ),
+          ),
+          GestureDetector(
+            onTap: (){Get.to(ProfilePage());},
+            child: Container(
+              height: 40.0,
+              width: 40.0,
+              margin: const EdgeInsets.only(right: 20, top: 10, bottom: 5),
+              decoration: BoxDecoration(
+                color: Colors.deepPurpleAccent,
+
+                borderRadius: BorderRadius.circular(20.0),
+                image: DecorationImage(
+                  image: Image.network(authController.firebaseUser.value?.photoURL ?? '').image,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: FutureBuilder<List<PlacementEvent>>(
+          future: eventList,
+          builder: (BuildContext context, AsyncSnapshot<List<PlacementEvent>> snapshot) {
+            if (snapshot.hasData && snapshot.data!.isNotEmpty)
+            {
+              return ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'This Weekend',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Text(
+                                'All',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 290,
+                          child: ListView.builder(
+                            itemCount: retrievedEventList?.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              PlacementEvent event = retrievedEventList![index];
+                              return HomePlacementEventContainer(
+                                event: event,
+                              );
+                            },
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Upcoming Events',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Text(
+                                'All',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 300,
+                          child: ListView.builder(
+                            itemCount: retrievedUpcomingEventList?.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              PlacementEvent event = retrievedUpcomingEventList![index];
+                              return HomePlacementEventContainer(
+                                event: event,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }
+      ),
+    );
+  }
+}

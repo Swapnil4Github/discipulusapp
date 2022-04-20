@@ -3,6 +3,7 @@ import 'package:discipulus/Controller/user_controller.dart';
 import 'package:get/get.dart';
 import 'package:discipulus/Model/constants.dart';
 import 'package:discipulus/View/dashboard.dart';
+import 'package:discipulus/bindings/home_binding.dart';
 class UserDetailsAdd extends GetView<UserController> {
   const UserDetailsAdd({Key? key}) : super(key: key);
 
@@ -57,6 +58,7 @@ class UserDetailsAdd extends GetView<UserController> {
         ),
         controller: controller.nameController,
         validator: (value) {
+          usercontroller2.nameController=controller.nameController;
         return controller.validateName(value!);
         },
         ),
@@ -105,6 +107,7 @@ class UserDetailsAdd extends GetView<UserController> {
             ),
             controller: controller.collegeNameController,
             validator: (value) {
+              collegeNameController2=controller.collegeNameController;
               return controller.validateAddress(value!);
             },
           ),
@@ -121,6 +124,8 @@ class UserDetailsAdd extends GetView<UserController> {
             ),
             controller: controller.degreeController,
             validator: (value) {
+              degreeController2=controller.degreeController;
+
               return controller.validateAddress(value!);
             },
           ),
@@ -137,6 +142,7 @@ class UserDetailsAdd extends GetView<UserController> {
             ),
             controller: controller.addressController,
             validator: (value) {
+              addressController2=controller.addressController;
               return controller.validateAddress(value!);
             },
           ),
@@ -153,6 +159,8 @@ class UserDetailsAdd extends GetView<UserController> {
             ),
             controller: controller.contactNumberController,
             validator: (value) {
+              contactNumberController2=controller.contactNumberController;
+
               return controller.validateAddress(value!);
             },
           ),
@@ -169,6 +177,7 @@ class UserDetailsAdd extends GetView<UserController> {
             ),
             controller: controller.descriptionController,
             validator: (value) {
+              descriptionController2=controller.descriptionController;
               return controller.validateAddress(value!);
             },
           ),

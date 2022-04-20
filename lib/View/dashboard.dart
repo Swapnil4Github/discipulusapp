@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:discipulus/Model/colors.dart';
 import 'package:discipulus/View/profilePage.dart';
 import 'package:discipulus/View/userDetailsAdd.dart';
+import 'package:discipulus/Widgets/HomePlacementEventContainer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:discipulus/Model/categoryModel.dart';
@@ -12,6 +13,15 @@ import 'package:get/get.dart';
 import 'package:discipulus/View/homeSlider.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:discipulus/Model/constants.dart';
+import 'package:discipulus/View/noteshome.dart';
+import 'package:discipulus/Screens/EventHomeScreen.dart';
+
+import '../Controller/EventDataBaseService.dart';
+import '../Screens/ChatHomeScreen.dart';
+import '../Screens/PlacementHomeScreen.dart';
+import 'package:discipulus/Modules/Event.dart';
+
+import '../Widgets/HomeEventContainer.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -23,10 +33,24 @@ class _HomePageState extends State<HomePage> {
   bool isNotification = false;
 
   PageController controller = PageController();
+  DatabaseService service = DatabaseService();
+
+  Future<List<Event>>? upcomingEventList;
+  List<Event>? retrievedUpcomingEventList;
+  Future<List<PlacementEvent>>? upcomingPlacementEventList;
+  List<PlacementEvent>? retrievedUpcomingPlacementEventList;
+  Future<void> _initRetrieval() async {
+    upcomingEventList = service.retrieveUpcomingEvent();
+    retrievedUpcomingEventList = await service.retrieveUpcomingEvent();
+    upcomingPlacementEventList = service.retrieveUpcomingPlacementEvent();
+    retrievedUpcomingPlacementEventList = await service.retrieveUpcomingPlacementEvent();
+  }
   @override
   void initState() {
     controller = PageController(viewportFraction: 0.6, initialPage: 0);
     super.initState();
+    _initRetrieval();
+
   }
 
   PageController pageController = PageController();
@@ -49,8 +73,30 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Colors.transparent,
               onTap: (int val){
                 setState(() {
+                  if(val==4)
+                  {
+                    Get.to(EventHomeScreen());
+                  }
+                  if(val==2)
+                  {
+                    Get.to(ChatHomeScreen());
+                  }
+                  if(val==1)
+                  {
+                    Get.to(() => NotesHomePage());
+                  }
+                  if(val==0)
+                  {
+                    Get.to(() => HomePage());
+                  }
+
+                  if(val==3)
+                  {
+                    Get.to(() => PlacementHomeScreen());
+                  }
                   _index = val;
-                });
+                }
+                    );
               },
 
               currentIndex: _index,
@@ -141,7 +187,7 @@ class _HomePageState extends State<HomePage> {
               height: 40.0,
               width: 40.0,
               margin: const EdgeInsets.only(right: 20, top: 10, bottom: 5),
-              child: Icon(Icons.notifications_none_outlined,color: Colors.grey.shade800,),
+              child: Icon(Icons.edit,color: Colors.grey.shade800,),
             ),
           ),
           GestureDetector(
@@ -168,468 +214,111 @@ class _HomePageState extends State<HomePage> {
           SingleChildScrollView(
             child: Column(
               children: [
-                // Padding(
-                //   padding:
-                //   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-                //   child: SafeArea(
-                //     child: Row(
-                //       children: [
-                //         Expanded(
-                //           child: Container(
-                //             height: 45.0,
-                //             width: 300.0,
-                //             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                //             decoration: BoxDecoration(
-                //               color: white,
-                //               border: Border.all(color: green),
-                //               boxShadow: [
-                //                 BoxShadow(
-                //                   color: green.withOpacity(0.15),
-                //                   blurRadius: 10,
-                //                   offset: const Offset(0, 0),
-                //                 ),
-                //               ],
-                //               borderRadius: BorderRadius.circular(10.0),
-                //             ),
-                //             child: Row(
-                //               children: [
-                //                 const SizedBox(
-                //                   height: 45,
-                //                   width: 310,
-                //                   child: TextField(
-                //                     decoration: InputDecoration(
-                //                       border: InputBorder.none,
-                //                       hintText: 'Search',
-                //                     ),
-                //                   ),
-                //                 ),
-                //                 Image.asset(
-                //                   'assets/icons/search.png',
-                //                   height: 25,
-                //                 )
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //         // Container(
-                //         //   height: 45.0,
-                //         //   width: 44.0,
-                //         //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                //         //   decoration: BoxDecoration(
-                //         //     color: green,
-                //         //     boxShadow: [
-                //         //       BoxShadow(
-                //         //         color: green.withOpacity(0.5),
-                //         //         blurRadius: 10,
-                //         //         offset: const Offset(0, 0),
-                //         //       ),
-                //         //     ],
-                //         //     borderRadius: BorderRadius.circular(10.0),
-                //         //   ),
-                //         //   child: Image.asset(
-                //         //     'assets/icons/adjust.png',
-                //         //     color: white,
-                //         //     height: 25,
-                //         //   ),
-                //         // ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 HomeSlider(),
-                // SizedBox(
-                //   height: 199,
-                //   child: ListView.builder(
-                //     controller: controller,
-                //     physics: const BouncingScrollPhysics(),
-                //     scrollDirection: Axis.horizontal,
-                //     padding: EdgeInsets.only(left: 16,right: 6),
-                //     itemCount: plants.length,
-                //
-                //     itemBuilder: (context,index){
-                //       return AnimatedContainer(
-                //           duration: const Duration(milliseconds: 500),
-                //           curve: Curves.bounceInOut,
-                //         margin: EdgeInsets.only(right:10),
-                //         height: 199,
-                //         width:300,
-                //
-                //         decoration :BoxDecoration(
-                //           borderRadius:BorderRadius.circular(28),
-                //       color : Colors.deepPurple,
-                //       )
-                //       );
-                //     },
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 250.0,
-                //   width: 400.0,
-                //   child: PageView.builder(
-                //     itemCount: plants.length,
-                //     controller: controller,
-                //     physics: const BouncingScrollPhysics(),
-                //     padEnds: false,
-                //     pageSnapping: true,
-                //     onPageChanged: (value) => setState(() => activePage = value),
-                //     itemBuilder: (itemBuilder, index) {
-                //       bool active = index == activePage;
-                //       return slider(active, index);
-                //     },
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 35.0,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [
-                //       for (int i = 0; i < categories.length; i++)
-                //         GestureDetector(
-                //           onTap: () {
-                //             setState(() => selectId = categories[i].id);
-                //           },
-                //           child: Column(
-                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //             children: [
-                //               Text(
-                //                 categories[i].name,
-                //                 style: TextStyle(
-                //                   color: selectId == i
-                //                       ? green
-                //                       : black.withOpacity(0.7),
-                //                   fontSize: 16.0,
-                //                 ),
-                //               ),
-                //               if (selectId == i)
-                //                 const CircleAvatar(
-                //                   radius: 3,
-                //                   backgroundColor: green,
-                //                 )
-                //             ],
-                //           ),
-                //         )
-                //     ],
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Text(
-                //         'Popular',
-                //         style: TextStyle(
-                //           color: black.withOpacity(0.7),
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 18.0,
-                //         ),
-                //       ),
-                //       Image.asset(
-                //         'assets/icons/more.png',
-                //         color: green,
-                //         height: 20,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                SizedBox(
-                  height: 130.0,
-                  child: ListView.builder(
-                    itemCount: populerPlants.length,
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.only(left: 20.0),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (itemBuilder, index) {
-                      return Container(
-                        width: 200.0,
-                        margin: const EdgeInsets.only(right: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: lightGreen,
-                          boxShadow: [
-                            BoxShadow(
-                              color: green.withOpacity(0.1),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Stack(
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  populerPlants[index].imagePath,
-                                  width: 70,
-                                  height: 70,
-                                ),
-                                const SizedBox(width: 10.0),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                FutureBuilder<List<Event>>(
+                    future: upcomingEventList,
+                    builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty)
+                      {
+                        return SizedBox(
+                          height: 300.0,
+                          child: ListView(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 30),
+                                child: Column(
                                   children: [
-                                    Text(
-                                      populerPlants[index].name,
-                                      style: TextStyle(
-                                        color: black.withOpacity(0.7),
-                                        fontWeight: FontWeight.w800,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Latest Event',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+
+                                      ],
                                     ),
-                                    Text(
-                                      '\$${populerPlants[index].price.toStringAsFixed(0)}',
-                                      style: TextStyle(
-                                        color: black.withOpacity(0.4),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.0,
+                                    SizedBox(height: 10),
+                                    Container(
+                                      height: 300,
+                                      child: ListView.builder(
+                                        itemCount: 1,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          Event event = retrievedUpcomingEventList![index];
+                                          return HomeEventContainer(
+                                            event: event,
+                                          );
+                                        },
                                       ),
                                     ),
                                   ],
-                                )
-                              ],
-                            ),
-                            Positioned(
-                              right: 20,
-                              bottom: 20,
-                              child: CircleAvatar(
-                                backgroundColor: green,
-                                radius: 15,
-                                child: Image.asset(
-                                  'assets/icons/add.png',
-                                  color: white,
-                                  height: 15,
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                              )
+                            ],
+                          ),
+                        );
+
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }
+                ),
+                FutureBuilder<List<PlacementEvent>>(
+                    future: upcomingPlacementEventList,
+                    builder: (BuildContext context, AsyncSnapshot<List<PlacementEvent>> snapshot) {
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty)
+                      {
+                        return SizedBox(
+                          height: 300.0,
+                          child: ListView(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 30),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Latest Placement Drive',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Container(
+                                      height: 300,
+                                      child: ListView.builder(
+                                        itemCount: 1,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          PlacementEvent event = retrievedUpcomingPlacementEventList![index];
+                                          return HomePlacementEventContainer(
+                                            event: event,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }
                 ),
 
-                SizedBox(
-                  height: 130.0,
-                  child: ListView.builder(
-                    itemCount: populerPlants.length,
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.only(left: 20.0),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (itemBuilder, index) {
-                      return Container(
-                        width: 200.0,
-                        margin: const EdgeInsets.only(right: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: lightGreen,
-                          boxShadow: [
-                            BoxShadow(
-                              color: green.withOpacity(0.1),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Stack(
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  populerPlants[index].imagePath,
-                                  width: 70,
-                                  height: 70,
-                                ),
-                                const SizedBox(width: 10.0),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      populerPlants[index].name,
-                                      style: TextStyle(
-                                        color: black.withOpacity(0.7),
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                    Text(
-                                      '\$${populerPlants[index].price.toStringAsFixed(0)}',
-                                      style: TextStyle(
-                                        color: black.withOpacity(0.4),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.0,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Positioned(
-                              right: 20,
-                              bottom: 20,
-                              child: CircleAvatar(
-                                backgroundColor: green,
-                                radius: 15,
-                                child: Image.asset(
-                                  'assets/icons/add.png',
-                                  color: white,
-                                  height: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 130.0,
-                  child: ListView.builder(
-                    itemCount: populerPlants.length,
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.only(left: 20.0),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (itemBuilder, index) {
-                      return Container(
-                        width: 200.0,
-                        margin: const EdgeInsets.only(right: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: lightGreen,
-                          boxShadow: [
-                            BoxShadow(
-                              color: green.withOpacity(0.1),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Stack(
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  populerPlants[index].imagePath,
-                                  width: 70,
-                                  height: 70,
-                                ),
-                                const SizedBox(width: 10.0),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      populerPlants[index].name,
-                                      style: TextStyle(
-                                        color: black.withOpacity(0.7),
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                    Text(
-                                      '\$${populerPlants[index].price.toStringAsFixed(0)}',
-                                      style: TextStyle(
-                                        color: black.withOpacity(0.4),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.0,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Positioned(
-                              right: 20,
-                              bottom: 20,
-                              child: CircleAvatar(
-                                backgroundColor: green,
-                                radius: 15,
-                                child: Image.asset(
-                                  'assets/icons/add.png',
-                                  color: white,
-                                  height: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(height: 30,),
-                SizedBox(
-                  height: 130.0,
-                  child: ListView.builder(
-                    itemCount: populerPlants.length,
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.only(left: 20.0),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (itemBuilder, index) {
-                      return Container(
-                        width: 200.0,
-                        margin: const EdgeInsets.only(right: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: lightGreen,
-                          boxShadow: [
-                            BoxShadow(
-                              color: green.withOpacity(0.1),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Stack(
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  populerPlants[index].imagePath,
-                                  width: 70,
-                                  height: 70,
-                                ),
-                                const SizedBox(width: 10.0),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      populerPlants[index].name,
-                                      style: TextStyle(
-                                        color: black.withOpacity(0.7),
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                    Text(
-                                      '\$${populerPlants[index].price.toStringAsFixed(0)}',
-                                      style: TextStyle(
-                                        color: black.withOpacity(0.4),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.0,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Positioned(
-                              right: 20,
-                              bottom: 20,
-                              child: CircleAvatar(
-                                backgroundColor: green,
-                                radius: 15,
-                                child: Image.asset(
-                                  'assets/icons/add.png',
-                                  color: white,
-                                  height: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
 
 
 
