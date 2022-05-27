@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 final List<String> imagesList = [
   'https://www.umeacademy.com/wp-content/uploads/2021/06/LPUNEST-2021-Application-Form-Extended.jpg',
   'https://www.fosslinux.com/wp-content/uploads/2020/02/GSoC-2020.png',
-  'https://scontent.flko7-2.fna.fbcdn.net/v/t1.6435-9/49494433_10156682895276590_6530934318338932736_n.png?_nc_cat=107&ccb=1-5&_nc_sid=e3f864&_nc_ohc=64EtoKIhCxsAX8ZmTSq&_nc_ht=scontent.flko7-2.fna&oh=00_AT-bRe7cvqfoERgETkE8URteafWbD64wHkHP6YIqaDakWg&oe=624ACFA5',
+  'https://newsfeed.org/wp-content/uploads/Automatic-placements-for-meeting-KPI.jpg',
   'https://i0.wp.com/fullopportunities.com/wp-content/uploads/2021/07/Microsoft-Internship-Opportunity-2021-Fully-Funded.jpg',
   'https://theinterviewguys.com/wp-content/uploads/2020/08/apple-interview-questions.png',
   'https://tbcdn.talentbrew.com/company/3413/v3_0/img/amazondelivers-social-share.jpg',

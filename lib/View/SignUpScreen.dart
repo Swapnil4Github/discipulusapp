@@ -2,10 +2,15 @@ import 'package:discipulus/Model/constants.dart';
 
 import 'package:flutter/material.dart';
 import 'package:discipulus/main.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:discipulus/View/userDetailsAdd.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth_provider.dart';
+import 'dashboard.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -24,6 +29,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
 
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    switch (authProvider.status) {
+      case Status.authenticateError:
+        Fluttertoast.showToast(msg: 'Sign in failed');
+        break;
+      case Status.authenticateCanceled:
+        Fluttertoast.showToast(msg: 'Sign in cancelled');
+        break;
+      case Status.authenticated:
+        Fluttertoast.showToast(msg: 'Sign in successful');
+        break;
+      default:
+        break;
+    }
     if(isMale==true){
       genderController2.text='Male';
     }else
@@ -535,18 +554,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       ),
                       child: GestureDetector(
-                        onTap: (){
-                          if(isSignupScreen==true)
-                            {
-                              authController.register(emailController2.text.trim(),
-                                  passwordController2.text.trim());
-                            }
-                          else
-                            {
-                              authController.login(emailController3.text.trim(),
-                                  passwordController3.text.trim());
-                            }
-
+                           onTap: () async {
+                             if(isSignupScreen==true)
+                             {
+                               authController.register(emailController2.text.trim(),
+                                   passwordController2.text.trim());
+                             }
+                             else
+                             {
+                               authController.login(emailController3.text.trim(),
+                                   passwordController3.text.trim());
+                             }
+                             if (authController.firebaseUser!=null) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()));
+                          }
                         },
                         child: Icon(
                           Icons.arrow_forward,color: Colors.white,
@@ -573,33 +597,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
                       children: [
+                        // TextButton(
+                        //   onPressed: () async {
+                        //   },
+                        //   style: TextButton.styleFrom(
+                        //     side: BorderSide(width: 1,color: Colors.grey),
+                        //     minimumSize: Size(155,40),
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(20),
+                        //     ),
+                        //     primary: Colors.white,
+                        //     backgroundColor: Palette.facebookColor,
+                        //   ),
+                        //   child: Row(
+                        //     children: [
+                        //       Icon(
+                        //         Icons.facebook,
+                        //       ),
+                        //       SizedBox(
+                        //         width: 5,
+                        //       ),
+                        //       Text("Facebook",),
+                        //     ],
+                        //   ),
+                        // ),
                         TextButton(
                           onPressed: () async {
-                          },
-                          style: TextButton.styleFrom(
-                            side: BorderSide(width: 1,color: Colors.grey),
-                            minimumSize: Size(155,40),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            primary: Colors.white,
-                            backgroundColor: Palette.facebookColor,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.facebook,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text("Facebook",),
-                            ],
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: (){
                             authController.signInWithGoogle();
+                            bool isSuccess = await authProvider.handleGoogleSignIn();
+                            if (isSuccess) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()));
+                            }
+
                           },
                           style: TextButton.styleFrom(
                             side: BorderSide(width: 1,color: Colors.grey),
@@ -678,3 +710,93 @@ class _AnimatedImageState extends State<AnimatedImage>
     );
   }
 }
+// import 'package:discipulus/View/dashboard.dart';
+// import 'package:flutter/material.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:provider/provider.dart';
+// import 'package:discipulus/allConstants/all_constants.dart';
+// import 'package:discipulus/providers/auth_provider.dart';
+//
+// class SignUpScreen extends StatefulWidget {
+//   const SignUpScreen({Key? key}) : super(key: key);
+//
+//   @override
+//   State<SignUpScreen> createState() => _SignUpScreenState();
+// }
+
+// class _SignUpScreenState extends State<SignUpScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final authProvider = Provider.of<AuthProvider>(context);
+//
+//     switch (authProvider.status) {
+//       case Status.authenticateError:
+//         Fluttertoast.showToast(msg: 'Sign in failed');
+//         break;
+//       case Status.authenticateCanceled:
+//         Fluttertoast.showToast(msg: 'Sign in cancelled');
+//         break;
+//       case Status.authenticated:
+//         Fluttertoast.showToast(msg: 'Sign in successful');
+//         break;
+//       default:
+//         break;
+//     }
+//
+//     return Scaffold(
+//       body: Stack(
+//         children: [
+//           ListView(
+//             shrinkWrap: true,
+//             padding: const EdgeInsets.symmetric(
+//               vertical: Sizes.dimen_30,
+//               horizontal: Sizes.dimen_20,
+//             ),
+//             children: [
+//               vertical50,
+//               const Text(
+//                 'Welcome to Smart Talk',
+//                 textAlign: TextAlign.center,
+//                 style: TextStyle(
+//                   fontSize: Sizes.dimen_26,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//               vertical30,
+//               const Text(
+//                 'Login to continue',
+//                 textAlign: TextAlign.center,
+//                 style: TextStyle(
+//                   fontSize: Sizes.dimen_22,
+//                   fontWeight: FontWeight.w500,
+//                 ),
+//               ),
+//               vertical50,
+//               Center(child: Image.asset('assets/images/back.png')),
+//               vertical50,
+//               GestureDetector(
+//                 onTap: () async {
+//                   bool isSuccess = await authProvider.handleGoogleSignIn();
+//                   if (isSuccess) {
+//                     Navigator.pushReplacement(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => const HomePage()));
+//                   }
+//                 },
+//                 child: Image.asset('assets/images/google_login.jpg'),
+//               ),
+//             ],
+//           ),
+//           Center(
+//             child: authProvider.status == Status.authenticating
+//                 ? const CircularProgressIndicator(
+//               color: AppColors.lightGrey,
+//             )
+//                 : const SizedBox.shrink(),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

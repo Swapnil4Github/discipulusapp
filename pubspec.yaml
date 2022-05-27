@@ -51,9 +51,17 @@ dependencies:
   cached_network_image:
   flutter_chat_ui:
   file_picker:
+  fluttertoast:
   image_picker:
   mime:
+  intl:
+  photo_view:
+  provider:
+  country_code_picker:
   open_file:
+  url_launcher:
+  equatable:
+  shared_preferences:
 dev_dependencies:
   flutter_test:
     sdk: flutter

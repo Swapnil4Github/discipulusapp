@@ -1,170 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../Model/constants.dart';
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-
-        backgroundColor: Colors.deepPurple,
-        body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 50.0,
-                  backgroundImage: Image.network(authController.firebaseUser.value?.photoURL ?? '').image,
-                ),
-                Text(
-                  authController.firebaseUser.value?.displayName ?? '',
-                  style: TextStyle(
-                    fontFamily: 'Pacifico',
-                    fontSize: 40.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'B.Tech(Computer Science)',
-                  style: TextStyle(
-                    fontFamily: 'Source Sans Pro',
-                    color: Colors.teal.shade100,
-                    fontSize: 20.0,
-                    letterSpacing: 2.5,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(
-                  height: 20.0,
-                  width: 150.0,
-                  child: Divider(
-                    color: Colors.teal.shade100,
-                  ),
-                ),
-                Card(
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.phone,
-                        color: Colors.teal,
-                      ),
-                      title: Text(
-                        '+91 7355919089',
-                        style: TextStyle(
-                          color: Colors.teal.shade900,
-                          fontFamily: 'Source Sans Pro',
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    )),
-                Card(
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.email,
-                        color: Colors.teal,
-                      ),
-                      title: Text(
-                        authController.firebaseUser.value?.email ?? '',
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.teal.shade900,
-                            fontFamily: 'Source Sans Pro'),
-                      ),
-                    )),
-                SizedBox(width: 20,),
-                RaisedButton(
-                  onPressed: () {
-                    authController.signOut();
-                    googleSign.signOut();
-                  },
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[
-                          Color(0xFF0D47A1),
-                          Color(0xFF1976D2),
-                          Color(0xFF42A5F5),
-                        ],
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(20.0),
-                    child: const Text('Log Out'),
-                  ),
-                ),
-                // GestureDetector(
-                //   onTap: ()async{
-                //     authController.signOut();
-                //     googleSign.signOut();
-                //   },
-                //   child: Text("Log Out",
-                //     style: Get.textTheme.bodyText1,
-                //   ),
-                // ),
-              ],
-            )),
-      ),
-    );
-  }
-}
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+//
+// import '../Model/constants.dart';
 // class ProfilePage extends StatelessWidget {
-//   const ProfilePage({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: Container(
-//         color: Colors.grey,
-//         child: Center(
-//           child: Container(
-//             color: Colors.black,
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 CircleAvatar(
-//                   backgroundImage: Image.network(authController.firebaseUser.value?.photoURL ?? '').image,
-//                   radius: 100,
-//                 ),
-//                 Text(authController.firebaseUser.value?.displayName ?? '',
-//                   style: Get.textTheme.headlineSmall,
-//                 ),
-//                 Text(authController.firebaseUser.value?.email ?? '',
-//                     style: Get.textTheme.bodyText1),
-//
-//                 GestureDetector(
-//                   onTap: ()async{
-//                     authController.signOut();
-//                     googleSign.signOut();
-//                   },
-//                   child: Text("Log Out",
-//                     style: Get.textTheme.bodyText1,
-//                   ),
-//                 ),
-//
-//               ],
-//
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-// import 'package:discipulus/Controller/user_controller.dart';
-// class ProfilePage extends GetView<UserController> {
 //   @override
 //   Widget build(BuildContext context) {
 //     return MaterialApp(
 //       debugShowCheckedModeBanner: false,
 //       home: Scaffold(
 //
-//         backgroundColor: Colors.grey,
+//         backgroundColor: Colors.deepPurple,
 //         body: SafeArea(
 //             child: Column(
 //               mainAxisAlignment: MainAxisAlignment.center,
@@ -178,22 +23,28 @@ class ProfilePage extends StatelessWidget {
 //                   style: TextStyle(
 //                     fontFamily: 'Pacifico',
 //                     fontSize: 40.0,
-//                     color: Colors.deepPurple,
+//                     color: Colors.white,
 //                     fontWeight: FontWeight.bold,
 //                   ),
 //                 ),
-//                 // Text(
-//                 //   'B.Tech(Computer Science)',
-//                 //   style: TextStyle(
-//                 //     fontFamily: 'Source Sans Pro',
-//                 //     color: Colors.deepPurple,
-//                 //     fontSize: 20.0,
-//                 //     letterSpacing: 2.5,
-//                 //     fontWeight: FontWeight.bold,
-//                 //   ),
-//                 // ),
+//                 Text(
+//                   'B.Tech(Computer Science)',
+//                   style: TextStyle(
+//                     fontFamily: 'Source Sans Pro',
+//                     color: Colors.teal.shade100,
+//                     fontSize: 20.0,
+//                     letterSpacing: 2.5,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
 //
-//
+//                 SizedBox(
+//                   height: 20.0,
+//                   width: 150.0,
+//                   child: Divider(
+//                     color: Colors.teal.shade100,
+//                   ),
+//                 ),
 //                 Card(
 //                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
 //                     child: ListTile(
@@ -202,42 +53,12 @@ class ProfilePage extends StatelessWidget {
 //                         color: Colors.teal,
 //                       ),
 //                       title: Text(
-//                         controller.contactNumberController.text,
+//                         '+91 7355919089',
 //                         style: TextStyle(
 //                           color: Colors.teal.shade900,
 //                           fontFamily: 'Source Sans Pro',
 //                           fontSize: 20.0,
 //                         ),
-//                       ),
-//                     )),
-//                 Card(
-//                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-//                     child: ListTile(
-//                       leading: Icon(
-//                         Icons.email,
-//                         color: Colors.teal,
-//                       ),
-//                       title: Text(
-//                         controller.degreeController.text,
-//                         style: TextStyle(
-//                             fontSize: 20.0,
-//                             color: Colors.teal.shade900,
-//                             fontFamily: 'Source Sans Pro'),
-//                       ),
-//                     )),
-//                 Card(
-//                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-//                     child: ListTile(
-//                       leading: Icon(
-//                         Icons.email,
-//                         color: Colors.teal,
-//                       ),
-//                       title: Text(
-//                         controller.genderController.text,
-//                         style: TextStyle(
-//                             fontSize: 20.0,
-//                             color: Colors.teal.shade900,
-//                             fontFamily: 'Source Sans Pro'),
 //                       ),
 //                     )),
 //                 Card(
@@ -255,53 +76,7 @@ class ProfilePage extends StatelessWidget {
 //                             fontFamily: 'Source Sans Pro'),
 //                       ),
 //                     )),
-//
-//                 Card(
-//                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-//                     child: ListTile(
-//                       leading: Icon(
-//                         Icons.email,
-//                         color: Colors.teal,
-//                       ),
-//                       title: Text(
-//                         controller.collegeNameController.text,
-//                         style: TextStyle(
-//                             fontSize: 20.0,
-//                             color: Colors.teal.shade900,
-//                             fontFamily: 'Source Sans Pro'),
-//                       ),
-//                     )),
-//                 Card(
-//                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-//                     child: ListTile(
-//                       leading: Icon(
-//                         Icons.email,
-//                         color: Colors.teal,
-//                       ),
-//                       title: Text(
-//                         controller.addressController.text,
-//                         style: TextStyle(
-//                             fontSize: 20.0,
-//                             color: Colors.teal.shade900,
-//                             fontFamily: 'Source Sans Pro'),
-//                       ),
-//                     )),
-//                 Card(
-//                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-//                     child: ListTile(
-//                       leading: Icon(
-//                         Icons.email,
-//                         color: Colors.teal,
-//                       ),
-//                       title: Text(
-//                         controller.descriptionController.text,
-//                         style: TextStyle(
-//                             fontSize: 20.0,
-//                             color: Colors.teal.shade900,
-//                             fontFamily: 'Source Sans Pro'),
-//                       ),
-//                     )),
-//
+//                 SizedBox(width: 20,),
 //                 RaisedButton(
 //                   onPressed: () {
 //                     authController.signOut();
@@ -338,3 +113,532 @@ class ProfilePage extends StatelessWidget {
 //     );
 //   }
 // }
+// // class ProfilePage extends StatelessWidget {
+// //   const ProfilePage({Key? key}) : super(key: key);
+// //
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return Expanded(
+// //       child: Container(
+// //         color: Colors.grey,
+// //         child: Center(
+// //           child: Container(
+// //             color: Colors.black,
+// //             child: Column(
+// //               mainAxisSize: MainAxisSize.min,
+// //               children: [
+// //                 CircleAvatar(
+// //                   backgroundImage: Image.network(authController.firebaseUser.value?.photoURL ?? '').image,
+// //                   radius: 100,
+// //                 ),
+// //                 Text(authController.firebaseUser.value?.displayName ?? '',
+// //                   style: Get.textTheme.headlineSmall,
+// //                 ),
+// //                 Text(authController.firebaseUser.value?.email ?? '',
+// //                     style: Get.textTheme.bodyText1),
+// //
+// //                 GestureDetector(
+// //                   onTap: ()async{
+// //                     authController.signOut();
+// //                     googleSign.signOut();
+// //                   },
+// //                   child: Text("Log Out",
+// //                     style: Get.textTheme.bodyText1,
+// //                   ),
+// //                 ),
+// //
+// //               ],
+// //
+// //             ),
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
+// // }
+// // import 'package:discipulus/Controller/user_controller.dart';
+// // class ProfilePage extends GetView<UserController> {
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return MaterialApp(
+// //       debugShowCheckedModeBanner: false,
+// //       home: Scaffold(
+// //
+// //         backgroundColor: Colors.grey,
+// //         body: SafeArea(
+// //             child: Column(
+// //               mainAxisAlignment: MainAxisAlignment.center,
+// //               children: <Widget>[
+// //                 CircleAvatar(
+// //                   radius: 50.0,
+// //                   backgroundImage: Image.network(authController.firebaseUser.value?.photoURL ?? '').image,
+// //                 ),
+// //                 Text(
+// //                   authController.firebaseUser.value?.displayName ?? '',
+// //                   style: TextStyle(
+// //                     fontFamily: 'Pacifico',
+// //                     fontSize: 40.0,
+// //                     color: Colors.deepPurple,
+// //                     fontWeight: FontWeight.bold,
+// //                   ),
+// //                 ),
+// //                 // Text(
+// //                 //   'B.Tech(Computer Science)',
+// //                 //   style: TextStyle(
+// //                 //     fontFamily: 'Source Sans Pro',
+// //                 //     color: Colors.deepPurple,
+// //                 //     fontSize: 20.0,
+// //                 //     letterSpacing: 2.5,
+// //                 //     fontWeight: FontWeight.bold,
+// //                 //   ),
+// //                 // ),
+// //
+// //
+// //                 Card(
+// //                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+// //                     child: ListTile(
+// //                       leading: Icon(
+// //                         Icons.phone,
+// //                         color: Colors.teal,
+// //                       ),
+// //                       title: Text(
+// //                         controller.contactNumberController.text,
+// //                         style: TextStyle(
+// //                           color: Colors.teal.shade900,
+// //                           fontFamily: 'Source Sans Pro',
+// //                           fontSize: 20.0,
+// //                         ),
+// //                       ),
+// //                     )),
+// //                 Card(
+// //                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+// //                     child: ListTile(
+// //                       leading: Icon(
+// //                         Icons.email,
+// //                         color: Colors.teal,
+// //                       ),
+// //                       title: Text(
+// //                         controller.degreeController.text,
+// //                         style: TextStyle(
+// //                             fontSize: 20.0,
+// //                             color: Colors.teal.shade900,
+// //                             fontFamily: 'Source Sans Pro'),
+// //                       ),
+// //                     )),
+// //                 Card(
+// //                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+// //                     child: ListTile(
+// //                       leading: Icon(
+// //                         Icons.email,
+// //                         color: Colors.teal,
+// //                       ),
+// //                       title: Text(
+// //                         controller.genderController.text,
+// //                         style: TextStyle(
+// //                             fontSize: 20.0,
+// //                             color: Colors.teal.shade900,
+// //                             fontFamily: 'Source Sans Pro'),
+// //                       ),
+// //                     )),
+// //                 Card(
+// //                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+// //                     child: ListTile(
+// //                       leading: Icon(
+// //                         Icons.email,
+// //                         color: Colors.teal,
+// //                       ),
+// //                       title: Text(
+// //                         authController.firebaseUser.value?.email ?? '',
+// //                         style: TextStyle(
+// //                             fontSize: 20.0,
+// //                             color: Colors.teal.shade900,
+// //                             fontFamily: 'Source Sans Pro'),
+// //                       ),
+// //                     )),
+// //
+// //                 Card(
+// //                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+// //                     child: ListTile(
+// //                       leading: Icon(
+// //                         Icons.email,
+// //                         color: Colors.teal,
+// //                       ),
+// //                       title: Text(
+// //                         controller.collegeNameController.text,
+// //                         style: TextStyle(
+// //                             fontSize: 20.0,
+// //                             color: Colors.teal.shade900,
+// //                             fontFamily: 'Source Sans Pro'),
+// //                       ),
+// //                     )),
+// //                 Card(
+// //                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+// //                     child: ListTile(
+// //                       leading: Icon(
+// //                         Icons.email,
+// //                         color: Colors.teal,
+// //                       ),
+// //                       title: Text(
+// //                         controller.addressController.text,
+// //                         style: TextStyle(
+// //                             fontSize: 20.0,
+// //                             color: Colors.teal.shade900,
+// //                             fontFamily: 'Source Sans Pro'),
+// //                       ),
+// //                     )),
+// //                 Card(
+// //                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+// //                     child: ListTile(
+// //                       leading: Icon(
+// //                         Icons.email,
+// //                         color: Colors.teal,
+// //                       ),
+// //                       title: Text(
+// //                         controller.descriptionController.text,
+// //                         style: TextStyle(
+// //                             fontSize: 20.0,
+// //                             color: Colors.teal.shade900,
+// //                             fontFamily: 'Source Sans Pro'),
+// //                       ),
+// //                     )),
+// //
+// //                 RaisedButton(
+// //                   onPressed: () {
+// //                     authController.signOut();
+// //                     googleSign.signOut();
+// //                   },
+// //                   textColor: Colors.white,
+// //                   padding: const EdgeInsets.all(0.0),
+// //                   child: Container(
+// //                     decoration: const BoxDecoration(
+// //                       gradient: LinearGradient(
+// //                         colors: <Color>[
+// //                           Color(0xFF0D47A1),
+// //                           Color(0xFF1976D2),
+// //                           Color(0xFF42A5F5),
+// //                         ],
+// //                       ),
+// //                     ),
+// //                     padding: const EdgeInsets.all(20.0),
+// //                     child: const Text('Log Out'),
+// //                   ),
+// //                 ),
+// //                 // GestureDetector(
+// //                 //   onTap: ()async{
+// //                 //     authController.signOut();
+// //                 //     googleSign.signOut();
+// //                 //   },
+// //                 //   child: Text("Log Out",
+// //                 //     style: Get.textTheme.bodyText1,
+// //                 //   ),
+// //                 // ),
+// //               ],
+// //             )),
+// //       ),
+// //     );
+// //   }
+// // }
+import 'dart:io';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:discipulus/allConstants/all_constants.dart';
+import 'package:discipulus/allConstants/app_constants.dart';
+import 'package:discipulus/allWidgets/loading_view.dart';
+import 'package:discipulus/Model/chat_user.dart';
+import 'package:discipulus/providers/profile_provider.dart';
+
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  TextEditingController? displayNameController;
+  TextEditingController? aboutMeController;
+  final TextEditingController _phoneController = TextEditingController();
+
+  late String currentUserId;
+  String dialCodeDigits = '+00';
+  String id = '';
+  String displayName = '';
+
+
+  String photoUrl = '';
+  String phoneNumber = '';
+  String aboutMe = '';
+
+  bool isLoading = false;
+  File? avatarImageFile;
+  late ProfileProvider profileProvider;
+
+  final FocusNode focusNodeNickname = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    profileProvider = context.read<ProfileProvider>();
+    readLocal();
+  }
+
+  void readLocal() {
+    setState(() {
+      id = profileProvider.getPrefs(FirestoreConstants.id) ?? "";
+      displayName = profileProvider.getPrefs(FirestoreConstants.displayName) ?? "";
+
+      photoUrl = profileProvider.getPrefs(FirestoreConstants.photoUrl) ?? "";
+      phoneNumber =
+          profileProvider.getPrefs(FirestoreConstants.phoneNumber) ?? "";
+      aboutMe = profileProvider.getPrefs(FirestoreConstants.aboutMe) ?? "";
+    });
+    displayNameController = TextEditingController(text: displayName);
+    aboutMeController = TextEditingController(text: aboutMe);
+  }
+
+  Future getImage() async {
+    ImagePicker imagePicker = ImagePicker();
+    // PickedFile is not supported
+    // Now use XFile?
+    XFile? pickedFile = await imagePicker
+        .pickImage(source: ImageSource.gallery)
+        .catchError((onError) {
+      Fluttertoast.showToast(msg: onError.toString())
+    });
+    File? image;
+    if (pickedFile != null) {
+      image = File(pickedFile.path);
+    }
+    if (image != null) {
+      setState(() {
+        avatarImageFile = image;
+        isLoading = true;
+      });
+      uploadFile();
+    }
+  }
+
+  Future uploadFile() async {
+    String fileName = id;
+    UploadTask uploadTask = profileProvider.uploadImageFile(
+        avatarImageFile!, fileName);
+    try {
+      TaskSnapshot snapshot = await uploadTask;
+      photoUrl = await snapshot.ref.getDownloadURL();
+      ChatUser updateInfo = ChatUser(id: id,
+          photoUrl: photoUrl,
+          displayName: displayName,
+          phoneNumber: phoneNumber,
+          aboutMe: aboutMe);
+      profileProvider.updateFirestoreData(
+          FirestoreConstants.pathUserCollection, id, updateInfo.toJson())
+          .then((value) async {
+        await profileProvider.setPrefs(FirestoreConstants.photoUrl, photoUrl);
+        setState(() {
+          isLoading = false;
+        });
+      });
+    } on FirebaseException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  void updateFirestoreData() {
+    focusNodeNickname.unfocus();
+    setState(() {
+      isLoading = true;
+      if (dialCodeDigits != "+00" && _phoneController.text != "") {
+        phoneNumber = dialCodeDigits + _phoneController.text.toString();
+      }
+    });
+    ChatUser updateInfo = ChatUser(id: id,
+        photoUrl: photoUrl,
+        displayName: displayName,
+        phoneNumber: phoneNumber,
+        aboutMe: aboutMe);
+    profileProvider.updateFirestoreData(
+        FirestoreConstants.pathUserCollection, id, updateInfo.toJson())
+        .then((value) async {
+      await profileProvider.setPrefs(
+          FirestoreConstants.displayName, displayName);
+      await profileProvider.setPrefs(
+          FirestoreConstants.phoneNumber, phoneNumber);
+      await profileProvider.setPrefs(
+        FirestoreConstants.photoUrl, photoUrl,);
+      await profileProvider.setPrefs(
+          FirestoreConstants.aboutMe,aboutMe );
+
+      setState(() {
+        isLoading = false;
+      });
+      Fluttertoast.showToast(msg: 'UpdateSuccess');
+    }).catchError((onError) {
+      Fluttertoast.showToast(msg: onError.toString());
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            AppConstants.profileTitle,
+          ),
+        ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  GestureDetector(
+                    onTap: getImage,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: avatarImageFile == null ? photoUrl.isNotEmpty ?
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: Image.network(photoUrl,
+                          fit: BoxFit.cover,
+                          width: 120,
+                          height: 120,
+                          errorBuilder: (context, object, stackTrace) {
+                            return const Icon(Icons.account_circle, size: 90,
+                              color: AppColors.greyColor,);
+                          },
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return SizedBox(
+                              width: 90,
+                              height: 90,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey,
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes! : null,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ) : const Icon(Icons.account_circle,
+                        size: 90,
+                        color: AppColors.greyColor,)
+                          : ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: Image.file(avatarImageFile!, width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,),),
+                      margin: const EdgeInsets.all(20),
+                    ),),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text('Name', style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.spaceCadet,
+                      ),),
+                      TextField(
+                        decoration: kTextInputDecoration.copyWith(
+                            hintText: 'Write your Name'),
+                        controller: displayNameController,
+                        onChanged: (value) {
+                          displayName = value;
+                        },
+                        focusNode: focusNodeNickname,
+                      ),
+                      vertical15,
+                      const Text('About Me...', style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.spaceCadet
+                      ),),
+                      TextField(
+                        controller: aboutMeController,
+                        decoration: kTextInputDecoration.copyWith(
+                            hintText: 'Write about yourself...'),
+                        onChanged: (value) {
+                          aboutMe = value;
+                        },
+                      ),
+                      vertical15,
+                      const Text('Select Country Code', style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.spaceCadet,
+                      ),),
+                      Container(
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 1.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: CountryCodePicker(
+                          onChanged: (country) {
+                            setState(() {
+                              dialCodeDigits = country.dialCode!;
+                            });
+                          },
+                          initialSelection: 'IN',
+                          showCountryOnly: false,
+                          showOnlyCountryWhenClosed: false,
+                          favorite: const ["+1", "US", "+91", "IN"],
+                        ),
+                      ),
+                      vertical15,
+                      const Text('Phone Number', style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.spaceCadet,
+                      ),),
+                      TextField(
+
+                        decoration: kTextInputDecoration.copyWith(
+                          hintText: phoneNumber,
+
+
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            phoneNumber = value;
+                          });
+                        },
+                        controller: _phoneController,
+                        maxLength: 12,
+                        keyboardType: TextInputType.number,
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(onPressed: updateFirestoreData, child:const Padding(
+                    padding:  EdgeInsets.all(8.0),
+                    child:  Text('Update Info'),
+                  )),
+
+                ],
+              ),
+            ),
+            Positioned(child: isLoading ? const LoadingView() : const SizedBox.shrink()),
+          ],
+        ),
+
+      );
+
+  }
+}

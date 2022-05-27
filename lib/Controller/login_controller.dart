@@ -1,3 +1,4 @@
+import 'package:discipulus/Screens/ChatHomeScreen.dart';
 import 'package:discipulus/View/SignUpScreen.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,7 +24,7 @@ class AuthController extends GetxController {
 
 
     firebaseUser.bindStream(auth.userChanges());
-    ever(firebaseUser, _setInitialScreen);
+    // ever(firebaseUser, _setInitialScreen);
 
 
     googleSignInAccount.bindStream(googleSign.onCurrentUserChanged);
@@ -45,7 +46,7 @@ class AuthController extends GetxController {
     if (user == null) {
 
       // if the user is not found then the user is navigated to the Register Screen
-      Get.offAll(() => SignUpScreen());
+      Get.offAll(() => ChatHomeScreen());
 
     } else {
 
