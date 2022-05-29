@@ -43,11 +43,11 @@ class UserDetailsAdd extends GetView<UserController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         Text(
-        'Add User',
+        'Update Your Profile',
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         SizedBox(
-        height: 8,
+        height: 15,
         ),
         TextFormField(
         decoration: InputDecoration(
@@ -190,7 +190,7 @@ class UserDetailsAdd extends GetView<UserController> {
         width: Get.context!.width, height: 45),
         child: ElevatedButton(
         child: Text(
-        'Add',
+        'Update',
         style: TextStyle(color: Colors.black, fontSize: 16),
         ),
         onPressed: () {

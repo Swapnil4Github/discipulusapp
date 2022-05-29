@@ -38,10 +38,16 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:  Colors.white,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+           Image.asset("assets/logo.jpeg",scale: 2.0,),
+
+            const SizedBox(
+              height: 20,
+            ),
             const Text(
               "Welcome to Discipulus",
               style: TextStyle(
@@ -52,14 +58,7 @@ class _SplashPageState extends State<SplashPage> {
             //   width: 300,
             //   height: 300,
             // ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              "Smartest College Application",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: Sizes.dimen_18),
-            ),
+
             const SizedBox(
               height: 20,
             ),

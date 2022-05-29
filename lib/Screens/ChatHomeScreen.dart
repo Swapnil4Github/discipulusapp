@@ -350,14 +350,23 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:discipulus/View/SignUpScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:provider/provider.dart';
 
+import '../Controller/user_controller.dart';
 import '../Model/chat_user.dart';
+import '../Model/colors.dart';
+import '../Model/constants.dart';
+import '../View/dashboard.dart';
+import '../View/noteshome.dart';
 import '../View/profilePage.dart';
+import '../View/userDetailsAdd.dart';
 import '../allConstants/color_constants.dart';
 import '../allConstants/firestore_constants.dart';
 import '../allConstants/size_constants.dart';
@@ -368,6 +377,8 @@ import '../providers/home_provider.dart';
 import '../utilities/debouncer.dart';
 import '../utilities/keyboard_utils.dart';
 import 'ChatPage.dart';
+import 'EventHomeScreen.dart';
+import 'PlacementHomeScreen.dart';
 
 class ChatHomeScreen extends StatefulWidget {
   const ChatHomeScreen({Key? key}) : super(key: key);
@@ -377,6 +388,7 @@ class ChatHomeScreen extends StatefulWidget {
 }
 
 class _ChatHomeScreenState extends State<ChatHomeScreen> {
+  int _index = 2;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
   final ScrollController scrollController = ScrollController();
@@ -506,13 +518,116 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // appBar: AppBar(
+        //       centerTitle: true,
+        //       title: const Text('ChatRoom',style: TextStyle(color: Colors.black),),
+        //   elevation: 0,
+        //   backgroundColor: white,
+        //   automaticallyImplyLeading: false,
+        //   leadingWidth: 60,
+        //   leading: Padding(
+        //     padding: const EdgeInsets.only(left: 8),
+        //     child: TextButton(
+        //       onPressed: () {
+        //         Get.lazyPut<UserController>(
+        //               () => UserController(),
+        //         );
+        //         Get.to(UserDetailsAdd());
+        //       },
+        //       child: Container(
+        //           width: 70,
+        //           height: 35,
+        //           decoration: BoxDecoration(
+        //             color: white,
+        //             border: Border.all(color: Colors.grey),
+        //             boxShadow: [
+        //               BoxShadow(
+        //                 color: Colors.grey,
+        //                 blurRadius: 2,
+        //                 offset: const Offset(0, 0),
+        //               ),
+        //             ],
+        //             borderRadius: BorderRadius.circular(8.0),
+        //           ),
+        //           child: Icon(Icons.edit,color: Colors.grey.shade700,)),
+        //     ),
+        //   ),
+        //   actions: [
+        //
+        //     GestureDetector(
+        //       onTap: (){Get.to(ProfilePage());},
+        //       child: Container(
+        //         height: 40.0,
+        //         width: 40.0,
+        //         margin: const EdgeInsets.only(right: 20, top: 10, bottom: 5),
+        //         decoration: BoxDecoration(
+        //           color: Colors.deepPurpleAccent,
+        //
+        //           borderRadius: BorderRadius.circular(20.0),
+        //           image: DecorationImage(
+        //             image: Image.network(authController.firebaseUser.value?.photoURL ?? '').image,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
+
+        bottomNavigationBar: Container(
+      height: 80,
+      child: FloatingNavbar(
+        selectedBackgroundColor: Colors.deepPurple,
+        unselectedItemColor: Colors.black,
+        selectedItemColor: Colors.white,
+        backgroundColor: Colors.white,
+        onTap: (int val){
+          setState(() {
+            if(val==4)
+            {
+              Get.to(EventHomeScreen());
+            }
+            if(val==2)
+            {
+              Get.to(ChatHomeScreen());
+            }
+            if(val==1)
+            {
+              Get.to(() => NotesHomePage());
+            }
+            if(val==0)
+            {
+              Get.to(() => HomePage());
+            }
+
+            if(val==3)
+            {
+              Get.to(() => PlacementHomeScreen());
+            }
+            _index = val;
+          }
+          );
+        },
+
+        currentIndex: _index,
+        items: [
+          FloatingNavbarItem(icon: Icons.home_rounded,title: 'Home'),
+          FloatingNavbarItem(icon: Icons.menu_book_rounded,title: 'Notes'),
+          FloatingNavbarItem(icon: Icons.chat,title: 'Chat'),
+          FloatingNavbarItem(icon: Icons.school_rounded,title: 'Jobs'),
+          FloatingNavbarItem(icon: Icons.event_note_outlined,title: 'Events'),
+
+
+        ],
+      ),
+    ),
         appBar: AppBar(
             centerTitle: true,
-            title: const Text('Smart Talk'),
+            title: const Text('Discipulus'),
             actions: [
               IconButton(
                   onPressed: () => googleSignOut(),
                   icon: const Icon(Icons.logout)),
+
               IconButton(
                   onPressed: () {
                     Navigator.push(

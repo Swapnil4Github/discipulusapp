@@ -17,11 +17,14 @@ import 'package:discipulus/View/noteshome.dart';
 import 'package:discipulus/Screens/EventHomeScreen.dart';
 
 import '../Controller/EventDataBaseService.dart';
+import '../Controller/user_controller.dart';
 import '../Screens/ChatHomeScreen.dart';
 import '../Screens/PlacementHomeScreen.dart';
 import 'package:discipulus/Modules/Event.dart';
 
 import '../Widgets/HomeEventContainer.dart';
+import '../providers/auth_provider.dart';
+import 'SignUpScreen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -34,6 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   PageController controller = PageController();
   DatabaseService service = DatabaseService();
+  late AuthProvider authProvider;
 
   Future<List<Event>>? upcomingEventList;
   List<Event>? retrievedUpcomingEventList;
@@ -47,70 +51,72 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   void initState() {
+
     controller = PageController(viewportFraction: 0.6, initialPage: 0);
     super.initState();
     _initRetrieval();
 
   }
-
+  Future<void> googleSignOut() async {
+    authProvider.googleSignOut();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) =>  SignUpScreen()));
+  }
   PageController pageController = PageController();
   int selectIndex = 0;
   int _index = 0;
   @override
   Widget build(BuildContext context) {
+    _initRetrieval();
+
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
       bottomNavigationBar: Container(
         height: 80,
-        child: ClipRect(
-          child: BackdropFilter(
-            filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-            child: FloatingNavbar(
-              selectedBackgroundColor: Colors.deepPurple,
-              unselectedItemColor: Colors.black,
-              selectedItemColor: Colors.white,
-              backgroundColor: Colors.transparent,
-              onTap: (int val){
-                setState(() {
-                  if(val==4)
-                  {
-                    Get.to(EventHomeScreen());
-                  }
-                  if(val==2)
-                  {
-                    Get.to(ChatHomeScreen());
-                  }
-                  if(val==1)
-                  {
-                    Get.to(() => NotesHomePage());
-                  }
-                  if(val==0)
-                  {
-                    Get.to(() => HomePage());
-                  }
+        child: FloatingNavbar(
+          selectedBackgroundColor: Colors.deepPurple,
+          unselectedItemColor: Colors.black,
+          selectedItemColor: Colors.white,
+          backgroundColor: Colors.white,
+          onTap: (int val){
+            setState(() {
+              if(val==4)
+              {
+                Get.to(EventHomeScreen());
+              }
+              if(val==2)
+              {
+                Get.to(ChatHomeScreen());
+              }
+              if(val==1)
+              {
+                Get.to(() => NotesHomePage());
+              }
+              if(val==0)
+              {
+                Get.to(() => HomePage());
+              }
 
-                  if(val==3)
-                  {
-                    Get.to(() => PlacementHomeScreen());
-                  }
-                  _index = val;
-                }
-                    );
-              },
+              if(val==3)
+              {
+                Get.to(() => PlacementHomeScreen());
+              }
+              _index = val;
+            }
+            );
+          },
 
-              currentIndex: _index,
-              items: [
-                FloatingNavbarItem(icon: Icons.home_rounded,title: 'Home'),
-                FloatingNavbarItem(icon: Icons.menu_book_rounded,title: 'Notes'),
-                FloatingNavbarItem(icon: Icons.chat,title: 'Chat'),
-                FloatingNavbarItem(icon: Icons.school_rounded,title: 'Jobs'),
-                FloatingNavbarItem(icon: Icons.event_note_outlined,title: 'Events'),
+          currentIndex: _index,
+          items: [
+            FloatingNavbarItem(icon: Icons.home_rounded,title: 'Home'),
+            FloatingNavbarItem(icon: Icons.menu_book_rounded,title: 'Notes'),
+            FloatingNavbarItem(icon: Icons.chat,title: 'Chat'),
+            FloatingNavbarItem(icon: Icons.school_rounded,title: 'Jobs'),
+            FloatingNavbarItem(icon: Icons.event_note_outlined,title: 'Events'),
 
 
-              ],
-            ),
-          ),
+          ],
         ),
       ),
 
@@ -157,6 +163,9 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.only(left: 8),
           child: TextButton(
             onPressed: () {
+              Get.lazyPut<UserController>(
+                    () => UserController(),
+              );
               Get.to(UserDetailsAdd());
             },
             child: Container(
@@ -174,22 +183,11 @@ class _HomePageState extends State<HomePage> {
                 ],
                 borderRadius: BorderRadius.circular(8.0),
               ),
-                child: Icon(Icons.notes_outlined,color: Colors.grey.shade700,)),
+                child: Icon(Icons.edit,color: Colors.grey.shade700,)),
           ),
         ),
         actions: [
-          GestureDetector(
-            onTap: (){
-              Get.to(UserDetailsAdd());
-            }
-            ,
-            child: Container(
-              height: 40.0,
-              width: 40.0,
-              margin: const EdgeInsets.only(right: 20, top: 10, bottom: 5),
-              child: Icon(Icons.edit,color: Colors.grey.shade800,),
-            ),
-          ),
+
           GestureDetector(
             onTap: (){Get.to(ProfilePage());},
             child: Container(
@@ -220,6 +218,7 @@ class _HomePageState extends State<HomePage> {
                     builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
                       if (snapshot.hasData && snapshot.data!.isNotEmpty)
                       {
+                        _initRetrieval();
                         return SizedBox(
                           height: 300.0,
                           child: ListView(
@@ -267,11 +266,14 @@ class _HomePageState extends State<HomePage> {
                       }
                     }
                 ),
-                FutureBuilder<List<PlacementEvent>>(
+
+              FutureBuilder<List<PlacementEvent>>(
                     future: upcomingPlacementEventList,
                     builder: (BuildContext context, AsyncSnapshot<List<PlacementEvent>> snapshot) {
                       if (snapshot.hasData && snapshot.data!.isNotEmpty)
                       {
+                        _initRetrieval();
+
                         return SizedBox(
                           height: 300.0,
                           child: ListView(

@@ -5,6 +5,7 @@ import 'package:discipulus/Modules/Event.dart';
 import 'package:discipulus/Widgets/HomeEventContainer.dart';
 import 'package:flutter/material.dart';
 import '../Controller/EventDataBaseService.dart';
+import '../Controller/user_controller.dart';
 import '../View/dashboard.dart';
 import 'package:discipulus/Modules/Data.dart';
 import 'package:discipulus/Modules/Event.dart';
@@ -54,54 +55,49 @@ class _EventHomeScreenState extends State<EventHomeScreen> {
       extendBody: true,
       bottomNavigationBar: Container(
         height: 80,
-        child: ClipRect(
-          child: BackdropFilter(
-            filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-            child: FloatingNavbar(
-              selectedBackgroundColor: Colors.deepPurple,
-              unselectedItemColor: Colors.black,
-              selectedItemColor: Colors.white,
-              backgroundColor: Colors.transparent,
-              onTap: (int val){
-                setState(() {
-                  if(val==2)
-                  {
-                    Get.to(ChatHomeScreen());
-                  }
-    if(val==4)
-    {
-    Get.to(EventHomeScreen());
-    }
-    if(val==1)
-    {
-    Get.to(() => NotesHomePage());
-    }
-    if(val==0)
-    {
-    Get.to(() => HomePage());
-    }
+        child: FloatingNavbar(
+          selectedBackgroundColor: Colors.deepPurple,
+          unselectedItemColor: Colors.black,
+          selectedItemColor: Colors.white,
+          backgroundColor: Colors.white,
+          onTap: (int val){
+            setState(() {
+              if(val==4)
+              {
+                Get.to(EventHomeScreen());
+              }
+              if(val==2)
+              {
+                Get.to(ChatHomeScreen());
+              }
+              if(val==1)
+              {
+                Get.to(() => NotesHomePage());
+              }
+              if(val==0)
+              {
+                Get.to(() => HomePage());
+              }
 
-    if(val==3)
-    {
-    Get.to(() => PlacementHomeScreen());
-    }
+              if(val==3)
+              {
+                Get.to(() => PlacementHomeScreen());
+              }
+              _index = val;
+            }
+            );
+          },
 
-                  _index = val;
-                });
-              },
-
-              currentIndex: _index,
-              items: [
-                FloatingNavbarItem(icon: Icons.home_rounded,title: 'Home'),
-                FloatingNavbarItem(icon: Icons.menu_book_rounded,title: 'Notes'),
-                FloatingNavbarItem(icon: Icons.chat,title: 'Chat'),
-                FloatingNavbarItem(icon: Icons.school_rounded,title: 'Jobs'),
-                FloatingNavbarItem(icon: Icons.event_note_outlined,title: 'Events'),
+          currentIndex: _index,
+          items: [
+            FloatingNavbarItem(icon: Icons.home_rounded,title: 'Home'),
+            FloatingNavbarItem(icon: Icons.menu_book_rounded,title: 'Notes'),
+            FloatingNavbarItem(icon: Icons.chat,title: 'Chat'),
+            FloatingNavbarItem(icon: Icons.school_rounded,title: 'Jobs'),
+            FloatingNavbarItem(icon: Icons.event_note_outlined,title: 'Events'),
 
 
-              ],
-            ),
-          ),
+          ],
         ),
       ),
       appBar: AppBar(
@@ -113,6 +109,9 @@ class _EventHomeScreenState extends State<EventHomeScreen> {
           padding: const EdgeInsets.only(left: 8),
           child: TextButton(
             onPressed: () {
+              Get.lazyPut<UserController>(
+                    () => UserController(),
+              );
               Get.to(UserDetailsAdd());
             },
             child: Container(
@@ -130,22 +129,10 @@ class _EventHomeScreenState extends State<EventHomeScreen> {
                   ],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Icon(Icons.notes_outlined,color: Colors.grey.shade700,)),
+                child: Icon(Icons.edit,color: Colors.grey.shade700,)),
           ),
         ),
         actions: [
-          GestureDetector(
-            onTap: (){
-              Get.to(UserDetailsAdd());
-            }
-            ,
-            child: Container(
-              height: 40.0,
-              width: 40.0,
-              margin: const EdgeInsets.only(right: 20, top: 10, bottom: 5),
-              child: Icon(Icons.edit,color: Colors.grey.shade800,),
-            ),
-          ),
           GestureDetector(
             onTap: (){Get.to(ProfilePage());},
             child: Container(
@@ -169,8 +156,10 @@ class _EventHomeScreenState extends State<EventHomeScreen> {
           builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
 if (snapshot.hasData && snapshot.data!.isNotEmpty)
   {
+    _initRetrieval();
+
     return ListView(
-      children: [
+        children: [
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Column(

@@ -351,6 +351,9 @@ import 'package:discipulus/allWidgets/loading_view.dart';
 import 'package:discipulus/Model/chat_user.dart';
 import 'package:discipulus/providers/profile_provider.dart';
 
+import '../providers/auth_provider.dart';
+import 'SignUpScreen.dart';
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -369,6 +372,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String id = '';
   String displayName = '';
 
+  late AuthProvider authProvider;
 
   String photoUrl = '';
   String phoneNumber = '';
@@ -450,6 +454,12 @@ class _ProfilePageState extends State<ProfilePage> {
       Fluttertoast.showToast(msg: e.toString());
     }
   }
+  Future<void> googleSignOut() async {
+    authProvider.googleSignOut();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) =>  SignUpScreen()));
+  }
+
 
   void updateFirestoreData() {
     focusNodeNickname.unfocus();
@@ -490,6 +500,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return
       Scaffold(
         appBar: AppBar(
+
           title: const Text(
             AppConstants.profileTitle,
           ),
@@ -609,11 +620,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: AppColors.spaceCadet,
                       ),),
                       TextField(
-
                         decoration: kTextInputDecoration.copyWith(
                           hintText: phoneNumber,
-
-
                         ),
                         onChanged: (value) {
                           setState(() {
